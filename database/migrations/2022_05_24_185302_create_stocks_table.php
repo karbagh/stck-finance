@@ -15,9 +15,8 @@ return new class extends Migration
     {
         Schema::create('stocks', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
             $table->foreignId('corporation_id');
-            $table->decimal('price');
+            $table->decimal('price')->index();
             $table->timestamps();
         });
     }

@@ -34,6 +34,8 @@ class RouteServiceProvider extends ServiceProvider
                 ->name('api.')
                 ->group(function () {
                     require base_path('routes/api/v1/client.php');
+                    require base_path('routes/api/v1/corporation.php');
+                    require base_path('routes/api/v1/stock.php');
                 });
         });
     }

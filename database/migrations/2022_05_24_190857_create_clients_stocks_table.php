@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('client_id');
             $table->foreignId('stock_id');
+            $table->decimal('bought_price');
             $table->integer('volume');
             $table->timestamps();
         });

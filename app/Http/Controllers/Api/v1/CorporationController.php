@@ -2,104 +2,198 @@
 
 namespace App\Http\Controllers\Api\v1;
 
-use App\Http\Controllers\Api\ApiController;
-use App\Http\Requests\StoreCorporationRequest;
-use App\Http\Requests\UpdateCorporationRequest;
 use App\Models\Corporation;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Api\ApiController;
+use App\Services\Corporation\ClientService;
+use App\Http\Resources\Corporation\CorporationResource;
+use App\Http\Requests\Corporation\StoreCorporationRequest;
+use App\Http\Requests\Corporation\UpdateCorporationRequest;
+use App\Dto\Request\Corporation\CreateClientRequestDto;
+use App\Dto\Request\Corporation\UpdateClientRequestDto;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
+/**
+ * @OA\Tag(
+ *     name="Corporations",
+ *     description="API Endpoints of Corporations"
+ * )
+ */
 final class CorporationController extends ApiController
 {
     /**
-     * @OA\Put(
-     *     path="/users/{id}",
-     *     summary="Updates a user",
-     *     @OA\Parameter(
-     *         description="Parameter with mutliple examples",
-     *         in="path",
-     *         name="id",
-     *         required=true,
-     *         @OA\Schema(type="string"),
-     *         @OA\Examples(example="int", value="1", summary="An int value."),
-     *         @OA\Examples(example="uuid", value="0006faf6-7a61-426c-9034-579f2cfcfa83", summary="An UUID value."),
-     *     ),
+     * @OA\Get (
+     *     path="/corporations",
+     *     tags={"Corporations"},
+     *     summary="List of corporations",
+     *     description="Get the list of corporations which owner is current user.",
      *     @OA\Response(
      *         response=200,
      *         description="OK"
-     *     )
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
      * )
      *
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return AnonymousResourceCollection
      */
-    public function index()
+    public function list(): AnonymousResourceCollection
     {
-        //
+        return CorporationResource::collection(
+            Auth::user()->corporations
+        );
     }
 
     /**
-     * Show the form for creating a new resource.
+     * @OA\Post  (
+     *     path="/corporations",
+     *     tags={"Corporations"},
+     *     summary="Store corporation",
+     *     description="Create some corporation for your account.",
+     *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/StoreCorporationRequest")
+     *      ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     * )
      *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Store a corporation in storage.
      *
-     * @param  \App\Http\Requests\StoreCorporationRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreCorporationRequest $request
+     * @return CorporationResource
      */
-    public function store(StoreCorporationRequest $request)
-    {
-        //
+    public function store(
+        StoreCorporationRequest $request,
+        ClientService $service
+    ): CorporationResource {
+        return CorporationResource::make($service->save(new CreateClientRequestDto(
+            $request->get('name'),
+            $request->get('capital'),
+        )));
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get (
+     *     path="/corporations/{slug}",
+     *     tags={"Corporations"},
+     *     summary="Showing corporation.",
+     *     description="Showing corporation with requested slug.",
+     *     @OA\Parameter(
+     *         description="Slug of neccesery corporation.",
+     *         in="path",
+     *         name="slug",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *         @OA\Examples(example="int", value="adcash", summary="An string value."),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK"
+     *      )
+     * )
      *
-     * @param  \App\Models\Corporation  $corporation
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Corporation $corporation)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
+     * Return resource of corporation.
      *
-     * @param  \App\Models\Corporation  $corporation
-     * @return \Illuminate\Http\Response
+     * @param Corporation $corporation
+     * @return CorporationResource
      */
-    public function edit(Corporation $corporation)
-    {
-        //
+    public function show(
+        Corporation $corporation
+    ): CorporationResource {
+        return CorporationResource::make($corporation);
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put (
+     *     path="/corporations/{slug}",
+     *     tags={"Corporations"},
+     *     summary="Update corporation",
+     *     description="Update some corporation for your account.",
+     *     @OA\Parameter(
+     *         description="Slug of neccesery corporation.",
+     *         in="path",
+     *         name="slug",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *         @OA\Examples(example="int", value="adcash", summary="An string value."),
+     *     ),
+     *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/UpdateCorporationRequest")
+     *      ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     * )
      *
-     * @param  \App\Http\Requests\UpdateCorporationRequest  $request
-     * @param  \App\Models\Corporation  $corporation
-     * @return \Illuminate\Http\Response
+     * @param UpdateCorporationRequest $request
+     * @param Corporation $corporation
+     * @param ClientService $service
+     * @return CorporationResource
      */
-    public function update(UpdateCorporationRequest $request, Corporation $corporation)
-    {
-        //
+    public function update(
+        UpdateCorporationRequest $request,
+        Corporation              $corporation,
+        ClientService            $service,
+    ): CorporationResource {
+        return CorporationResource::make($service->update(new UpdateClientRequestDto(
+            $request->get('name') ?? $corporation->name,
+            $request->get('capital') ?? $corporation->capital,
+        ), $corporation));
     }
 
     /**
+     * @OA\Delete (
+     *     path="/corporations/{slug}",
+     *     tags={"Corporations"},
+     *     summary="Delete corporation",
+     *     description="Delete choosed corporation by slug.",
+     *     @OA\Parameter(
+     *         description="Slug of neccesery corporation.",
+     *         in="path",
+     *         name="slug",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *         @OA\Examples(example="string", value="adcash", summary="An string value."),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     * )
+     *
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Corporation  $corporation
-     * @return \Illuminate\Http\Response
+     * @param Corporation $corporation
+     * @return array
      */
-    public function destroy(Corporation $corporation)
+    public function destroy(Corporation $corporation): array
     {
-        //
+        $corporation->delete();
+
+        return JsonResponse::message(trans('messages.success.destroyed', [
+            'item' => 'Corporation'
+        ]));
     }
 }
