@@ -2,19 +2,17 @@
 
 namespace App\Http\Controllers\Api\v1;
 
-use App\Dto\Request\Client\SellStockRequestDto;
-use App\Http\Requests\Client\SellStockRequest;
-use App\Models\Client;
-use App\Models\Stock;
 use Exception;
+use App\Models\Client;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Client\ClientService;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Resources\Client\ClientResource;
 use App\Http\Requests\Client\BuyStockRequest;
-use App\Http\Requests\Stock\StoreStockRequest;
+use App\Http\Requests\Client\SellStockRequest;
 use App\Dto\Request\Client\BuyStockRequestDto;
+use App\Dto\Request\Client\SellStockRequestDto;
 use App\Http\Requests\Client\StoreClientRequest;
 use App\Http\Requests\Client\UpdateClientRequest;
 use App\Dto\Request\Client\CreateClientRequestDto;
@@ -258,6 +256,10 @@ final class ClientController extends ApiController
      *         @OA\Schema(type="string"),
      *         @OA\Examples(example="int", value="1", summary="An string value."),
      *     ),
+     *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/BuyStockRequest")
+     *      ),
      *     @OA\Response(
      *         response=200,
      *         description="OK"
@@ -299,6 +301,10 @@ final class ClientController extends ApiController
      *         @OA\Schema(type="string"),
      *         @OA\Examples(example="int", value="1", summary="An string value."),
      *     ),
+     *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/SellStockRequest")
+     *      ),
      *     @OA\Response(
      *         response=200,
      *         description="OK"
