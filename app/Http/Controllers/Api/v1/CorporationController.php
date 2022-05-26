@@ -6,12 +6,12 @@ use App\Models\Corporation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Api\ApiController;
-use App\Services\Corporation\ClientService;
+use App\Services\Corporation\CorporationService;
 use App\Http\Resources\Corporation\CorporationResource;
 use App\Http\Requests\Corporation\StoreCorporationRequest;
 use App\Http\Requests\Corporation\UpdateCorporationRequest;
-use App\Dto\Request\Corporation\CreateClientRequestDto;
-use App\Dto\Request\Corporation\UpdateClientRequestDto;
+use App\Dto\Request\Corporation\CreateCorporationRequestDto;
+use App\Dto\Request\Corporation\UpdateCorporationRequestDto;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 /**
@@ -76,9 +76,9 @@ final class CorporationController extends ApiController
      */
     public function store(
         StoreCorporationRequest $request,
-        ClientService $service
+        CorporationService $service
     ): CorporationResource {
-        return CorporationResource::make($service->save(new CreateClientRequestDto(
+        return CorporationResource::make($service->save(new CreateCorporationRequestDto(
             $request->get('name'),
             $request->get('capital'),
         )));
@@ -145,15 +145,15 @@ final class CorporationController extends ApiController
      *
      * @param UpdateCorporationRequest $request
      * @param Corporation $corporation
-     * @param ClientService $service
+     * @param CorporationService $service
      * @return CorporationResource
      */
     public function update(
         UpdateCorporationRequest $request,
         Corporation              $corporation,
-        ClientService            $service,
+        CorporationService            $service,
     ): CorporationResource {
-        return CorporationResource::make($service->update(new UpdateClientRequestDto(
+        return CorporationResource::make($service->update(new UpdateCorporationRequestDto(
             $request->get('name') ?? $corporation->name,
             $request->get('capital') ?? $corporation->capital,
         ), $corporation));

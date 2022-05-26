@@ -2,18 +2,31 @@
 
 namespace App\Http\Controllers\Api\v1;
 
-use App\Dto\Request\Client\UpdateClientRequestDto;
+use App\Dto\Request\Client\SellStockRequestDto;
+use App\Http\Requests\Client\SellStockRequest;
 use App\Models\Client;
+use App\Models\Stock;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Client\ClientService;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Resources\Client\ClientResource;
+use App\Http\Requests\Client\BuyStockRequest;
+use App\Http\Requests\Stock\StoreStockRequest;
+use App\Dto\Request\Client\BuyStockRequestDto;
 use App\Http\Requests\Client\StoreClientRequest;
 use App\Http\Requests\Client\UpdateClientRequest;
 use App\Dto\Request\Client\CreateClientRequestDto;
+use App\Dto\Request\Client\UpdateClientRequestDto;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
+/**
+ * @OA\Tag(
+ *     name="Clients",
+ *     description="API Endpoints of Clients"
+ * )
+ */
 final class ClientController extends ApiController
 {
     /**
@@ -82,17 +95,17 @@ final class ClientController extends ApiController
 
     /**
      * @OA\Get (
-     *     path="/clients/{slug}",
+     *     path="/clients/{id}",
      *     tags={"Clients"},
      *     summary="Showing client.",
-     *     description="Showing client with requested slug.",
+     *     description="Showing client with requested id.",
      *     @OA\Parameter(
-     *         description="Slug of neccesery client.",
+     *         description="Id of neccesery client.",
      *         in="path",
-     *         name="slug",
+     *         name="id",
      *         required=true,
      *         @OA\Schema(type="string"),
-     *         @OA\Examples(example="int", value="adcash", summary="An string value."),
+     *         @OA\Examples(example="int", value="1", summary="An string value."),
      *     ),
      *     @OA\Response(
      *         response=200,
@@ -113,17 +126,17 @@ final class ClientController extends ApiController
 
     /**
      * @OA\Put (
-     *     path="/clients/{slug}",
+     *     path="/clients/{id}",
      *     tags={"Clients"},
      *     summary="Update client",
      *     description="Update some client for your account.",
      *     @OA\Parameter(
-     *         description="Slug of neccesery client.",
+     *         description="Id of neccesery client.",
      *         in="path",
-     *         name="slug",
+     *         name="id",
      *         required=true,
      *         @OA\Schema(type="string"),
-     *         @OA\Examples(example="int", value="adcash", summary="An string value."),
+     *         @OA\Examples(example="int", value="1", summary="An string value."),
      *     ),
      *     @OA\RequestBody(
      *          required=true,
@@ -159,17 +172,17 @@ final class ClientController extends ApiController
 
     /**
      * @OA\Delete (
-     *     path="/clients/{slug}",
+     *     path="/clients/{id}",
      *     tags={"Clients"},
      *     summary="Delete client",
-     *     description="Delete choosed client by slug.",
+     *     description="Delete choosed client by id.",
      *     @OA\Parameter(
-     *         description="Slug of neccesery client.",
+     *         description="Id of neccesery stock.",
      *         in="path",
-     *         name="slug",
+     *         name="id",
      *         required=true,
      *         @OA\Schema(type="string"),
-     *         @OA\Examples(example="string", value="adcash", summary="An string value."),
+     *         @OA\Examples(example="int", value="1", summary="An string value."),
      *     ),
      *     @OA\Response(
      *         response=200,
@@ -193,5 +206,125 @@ final class ClientController extends ApiController
         return JsonResponse::message(trans('messages.success.destroyed', [
             'item' => 'Client'
         ]));
+    }
+
+    /**
+     * @OA\Get (
+     *     path="/clients/{id}/stocks",
+     *     tags={"Clients"},
+     *     summary="Get list of stock for client",
+     *     description="With this end point you can get list of stock buyed/selled.",
+     *     @OA\Parameter(
+     *         description="Id of neccesery client.",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *         @OA\Examples(example="int", value="1", summary="An string value."),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     * )
+     *
+     * Save stock relation for client to storage.
+     *
+     * @param Client $client
+     * @param BuyStockRequest $request
+     * @return ClientResource
+     */
+    public function stocks(
+        Client $client,
+    ): ClientResource {
+        return ClientResource::make($client->load('stocks'));
+    }
+
+    /**
+     * @OA\Post  (
+     *     path="/clients/{id}/stocks/buy",
+     *     tags={"Clients"},
+     *     summary="Buy stock for client",
+     *     description="With this end point you can buy stock for client.",
+     *     @OA\Parameter(
+     *         description="Id of neccesery client.",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *         @OA\Examples(example="int", value="1", summary="An string value."),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     * )
+     *
+     * Save stock relation for client to storage.
+     *
+     * @param Client $client
+     * @param BuyStockRequest $request
+     * @return ClientResource
+     */
+    public function buy(
+        Client $client,
+        BuyStockRequest $request,
+        ClientService $service,
+    ): ClientResource {
+        return ClientResource::make($service->buy(new BuyStockRequestDto(
+            $request->get('stockId'),
+            $request->get('volume'),
+        ), $client));
+    }
+
+    /**
+     * @OA\Post  (
+     *     path="/clients/{id}/stocks/sell",
+     *     tags={"Clients"},
+     *     summary="Sell stock for client",
+     *     description="With this end point you can sell stock for client.",
+     *     @OA\Parameter(
+     *         description="Id of neccesery client.",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *         @OA\Examples(example="int", value="1", summary="An string value."),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK"
+     *     ),
+     *     @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     * )
+     *
+     * Save stock relation for client to storage.
+     *
+     * @param Client $client
+     * @param SellStockRequest $request
+     * @param ClientService $service
+     * @return ClientResource
+     * @throws Exception
+     */
+    public function sell(
+        Client $client,
+        SellStockRequest $request,
+        ClientService $service,
+    ): ClientResource {
+        return ClientResource::make($service->sell(new SellStockRequestDto(
+            $request->get('boughtStockId'),
+            $request->get('volume'),
+        ), $client));
     }
 }

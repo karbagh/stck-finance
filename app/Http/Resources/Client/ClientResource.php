@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources\Client;
 
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -22,7 +21,10 @@ class ClientResource extends JsonResource
             'lastName' => $this->last_name,
             'fullName' => $this->full_name,
             'username' => $this->username,
+            'budget' => $this->budget,
+            'range' => $this->totalRange,
             'email' => $this->email,
+            'stocks' => ClientStockResource::collection($this->whenLoaded('stocks')),
         ];
     }
 }

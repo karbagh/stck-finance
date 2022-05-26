@@ -4,7 +4,7 @@ namespace App\Dto\Request\Stock;
 
 use App\Dto\Dto;
 
-class CreateStockRequestDto extends Dto
+final class CreateStockRequestDto extends Dto
 {
 
     /**

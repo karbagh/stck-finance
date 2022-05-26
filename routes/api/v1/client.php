@@ -23,5 +23,10 @@ Route::name('client.')->controller(ClientController::class)
             Route::name('show')->get('', 'show');
             Route::name('update')->put('', 'update');
             Route::name('destroy')->delete('', 'destroy');
+            Route::prefix('stocks')->name('stocks.')->group(function() {
+                Route::name('list')->get('', 'stocks');
+                Route::name('buy')->post('buy', 'buy');
+                Route::name('sell')->put('sell', 'sell');
+            });
         });
     });

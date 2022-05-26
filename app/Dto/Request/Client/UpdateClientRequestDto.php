@@ -4,7 +4,7 @@ namespace App\Dto\Request\Client;
 
 use App\Dto\Dto;
 
-class UpdateClientRequestDto extends Dto
+final class UpdateClientRequestDto extends Dto
 {
     /**
      * @param string|null $firstName

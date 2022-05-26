@@ -4,7 +4,7 @@ namespace App\Dto\Request\Corporation;
 
 use App\Dto\Dto;
 
-class CreateCorporationRequestDto extends Dto
+final class CreateCorporationRequestDto extends Dto
 {
 
     /**

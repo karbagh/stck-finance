@@ -2,10 +2,10 @@
 
 namespace App\Services\Stock;
 
+use App\Models\Stock;
 use App\Models\Corporation;
 use App\Dto\Request\Stock\CreateStockRequestDto;
 use App\Dto\Request\Stock\UpdateStockRequestDto;
-use App\Models\Stock;
 
 final class StockService
 {

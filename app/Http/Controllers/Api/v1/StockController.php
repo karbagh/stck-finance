@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\v1;
 
+use App\Models\Client;
 use App\Models\Stock;
 use App\Models\Corporation;
 use Illuminate\Http\JsonResponse;
@@ -195,10 +196,5 @@ final class StockController extends ApiController
         return JsonResponse::message(trans('messages.success.destroyed', [
             'item' => 'Stock'
         ]));
-    }
-
-    public function buy()
-    {
-
     }
 }
