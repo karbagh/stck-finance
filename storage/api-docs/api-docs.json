@@ -1,0 +1,830 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Stock Finance API documentation",
+        "description": "Stock Finance is a system, which let you buy and sell stocks of some corporation.",
+        "contact": {
+            "name": "Karen Baghdasaryan",
+            "email": "karenbaghdasaryan598@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://api.stock-finance.test/v1",
+            "description": "Stock Finance API Server"
+        }
+    ],
+    "paths": {
+        "/clients": {
+            "get": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "List of clients",
+                "description": "Get the list of clients which owner is current user.",
+                "operationId": "43f6ee7dc57d3f09566088f1a8630c5c",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "Store client",
+                "description": "Create some client for your account.",
+                "operationId": "5744a835f087e2eed25a9a77c1d6225c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreClientRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/clients/{id}": {
+            "get": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "Showing client.",
+                "description": "Showing client with requested id.",
+                "operationId": "476da0d9034c49bbfb3ccc7c32b7a671",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id of neccesery client.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "int": {
+                                "summary": "An string value.",
+                                "value": "1"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "Update client",
+                "description": "Update some client for your account.",
+                "operationId": "872b56cccdfd4e646e2dbace4f0bf47d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id of neccesery client.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "int": {
+                                "summary": "An string value.",
+                                "value": "1"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateClientRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "Delete client",
+                "description": "Delete choosed client by id.",
+                "operationId": "c67ca8758f2b2976b5bc832f73e8d2ac",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id of neccesery stock.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "int": {
+                                "summary": "An string value.",
+                                "value": "1"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/clients/{id}/stocks": {
+            "get": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "Get list of stock for client",
+                "description": "With this end point you can get list of stock buyed/selled.",
+                "operationId": "950ca7ff9d4785a3189d406f28aa5eba",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id of neccesery client.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "int": {
+                                "summary": "An string value.",
+                                "value": "1"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/clients/{id}/stocks/buy": {
+            "post": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "Buy stock for client",
+                "description": "With this end point you can buy stock for client.",
+                "operationId": "011938bfec5b2da96643584ee80b91dc",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id of neccesery client.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "int": {
+                                "summary": "An string value.",
+                                "value": "1"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BuyStockRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/clients/{id}/stocks/sell": {
+            "post": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "Sell stock for client",
+                "description": "With this end point you can sell stock for client.",
+                "operationId": "f428ad179e194b860d6737b6139c4369",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id of neccesery client.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "int": {
+                                "summary": "An string value.",
+                                "value": "1"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SellStockRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/corporations": {
+            "get": {
+                "tags": [
+                    "Corporations"
+                ],
+                "summary": "List of corporations",
+                "description": "Get the list of corporations which owner is current user.",
+                "operationId": "4c06a80ec8fb64670621267217988774",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Corporations"
+                ],
+                "summary": "Store corporation",
+                "description": "Create some corporation for your account.",
+                "operationId": "0993dd74d5353f706fada7b53956aa40",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreCorporationRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/corporations/{slug}": {
+            "get": {
+                "tags": [
+                    "Corporations"
+                ],
+                "summary": "Showing corporation.",
+                "description": "Showing corporation with requested slug.",
+                "operationId": "d63d30102bdc4b6a5d793af190cc7e62",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": "Slug of neccesery corporation.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "int": {
+                                "summary": "An string value.",
+                                "value": "adcash"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Corporations"
+                ],
+                "summary": "Update corporation",
+                "description": "Update some corporation for your account.",
+                "operationId": "7cb3e52e364211d4205dacbfe80286fd",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": "Slug of neccesery corporation.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "int": {
+                                "summary": "An string value.",
+                                "value": "adcash"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateCorporationRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Corporations"
+                ],
+                "summary": "Delete corporation",
+                "description": "Delete choosed corporation by slug.",
+                "operationId": "ba72ac12c258af20d1e68c60cefb7ef8",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": "Slug of neccesery corporation.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "string": {
+                                "summary": "An string value.",
+                                "value": "adcash"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/stocks": {
+            "get": {
+                "tags": [
+                    "Stocks"
+                ],
+                "summary": "List of stocks",
+                "description": "Get the list of stocks which owner is current user.",
+                "operationId": "6e62a404e35fd0fb579447cd8e18c69a",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/stocks/{corporation:slug}": {
+            "post": {
+                "tags": [
+                    "Stocks"
+                ],
+                "summary": "Store stock",
+                "description": "Create some stock for your account.",
+                "operationId": "17c1ed834b2995971e64c249a08469a0",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreStockRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/stocks/{id}": {
+            "get": {
+                "tags": [
+                    "Stocks"
+                ],
+                "summary": "Showing stock.",
+                "description": "Showing stock with requested slug.",
+                "operationId": "3fe5dc1fa9b0c7d4b78af3b21f73f91a",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": "Slug of neccesery corporation.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "int": {
+                                "summary": "An int value.",
+                                "value": "1"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/stocks/{slug}": {
+            "put": {
+                "tags": [
+                    "Stocks"
+                ],
+                "summary": "Update corporation",
+                "description": "Update some corporation for your account.",
+                "operationId": "5cd3f187d7cf4fa510ada7e866f7ea97",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": "Slug of neccesery corporation.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "int": {
+                                "summary": "An string value.",
+                                "value": "adcash"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateStockRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Stocks"
+                ],
+                "summary": "Delete corporation",
+                "description": "Delete choosed corporation by slug.",
+                "operationId": "aadedd45da8a70b70fb516b9e0cb75ff",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": "Slug of neccesery corporation.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "int": {
+                                "summary": "An string value.",
+                                "value": "adcash"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "BuyStockRequest": {
+                "title": "Buy Stock request",
+                "description": "Buy Stock request body data",
+                "required": [
+                    "stockId",
+                    "volume"
+                ],
+                "properties": {
+                    "stockId": {
+                        "title": "stocksId",
+                        "description": "Id of stock which should buy",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "volume": {
+                        "title": "volume",
+                        "description": "Volume of stocks to buy",
+                        "type": "integer",
+                        "example": "15"
+                    }
+                },
+                "type": "object"
+            },
+            "SellStockRequest": {
+                "title": "Sell Stock request",
+                "description": "Buy Stock request body data",
+                "required": [
+                    "boughtStockId",
+                    "volume"
+                ],
+                "properties": {
+                    "boughtStockId": {
+                        "title": "boughtStockId",
+                        "description": "Id of bought stock which should sell",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "volume": {
+                        "title": "volume",
+                        "description": "Volume of stocks to buy",
+                        "type": "integer",
+                        "example": "15"
+                    }
+                },
+                "type": "object"
+            },
+            "StoreClientRequest": {
+                "title": "Store Client request",
+                "description": "Store Client request body data",
+                "required": [
+                    "firstName",
+                    "lastName",
+                    "username",
+                    "email"
+                ],
+                "properties": {
+                    "firstName": {
+                        "title": "firstName",
+                        "description": "First Name of the new client",
+                        "type": "string",
+                        "example": "John"
+                    },
+                    "lastName": {
+                        "title": "lastName",
+                        "description": "Last Name of the new client",
+                        "type": "string",
+                        "example": "Doe"
+                    },
+                    "username": {
+                        "title": "username",
+                        "description": "Username of the new client",
+                        "type": "string",
+                        "example": "johndoe@gmail.com"
+                    },
+                    "email": {
+                        "title": "firstName",
+                        "description": "Name of the new client",
+                        "type": "string",
+                        "example": "John"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateClientRequest": {
+                "title": "Store Client request",
+                "description": "Store Client request body data",
+                "properties": {
+                    "firstName": {
+                        "title": "firstName",
+                        "description": "First Name of the new client",
+                        "type": "string",
+                        "example": "John"
+                    },
+                    "lastName": {
+                        "title": "lastName",
+                        "description": "Last Name of the new client",
+                        "type": "string",
+                        "example": "Doe"
+                    },
+                    "username": {
+                        "title": "username",
+                        "description": "Username of the new client",
+                        "type": "string",
+                        "example": "johndoe@gmail.com"
+                    },
+                    "email": {
+                        "title": "firstName",
+                        "description": "Name of the new client",
+                        "type": "string",
+                        "example": "John"
+                    }
+                },
+                "type": "object"
+            },
+            "StoreCorporationRequest": {
+                "title": "Store Corporation request",
+                "description": "Store Corporation request body data",
+                "required": [
+                    "name",
+                    "capital"
+                ],
+                "properties": {
+                    "name": {
+                        "title": "name",
+                        "description": "Name of the new corporation",
+                        "type": "string",
+                        "example": "Adcash"
+                    },
+                    "capital": {
+                        "title": "capital",
+                        "description": "Capital of the new corporation",
+                        "type": "number",
+                        "format": "float",
+                        "example": "99999999.99"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateCorporationRequest": {
+                "title": "Update Corporation request",
+                "description": "Update Corporation request body data",
+                "properties": {
+                    "name": {
+                        "title": "name",
+                        "description": "Name of the new corporation",
+                        "type": "string",
+                        "example": "Adcash"
+                    },
+                    "capital": {
+                        "title": "capital",
+                        "description": "Capital of the new corporation",
+                        "type": "number",
+                        "format": "float",
+                        "example": "99999999.99"
+                    }
+                },
+                "type": "object"
+            },
+            "StoreStockRequest": {
+                "title": "Store Stock request",
+                "description": "Store Stock request body data",
+                "required": [
+                    "price"
+                ],
+                "properties": {
+                    "price": {
+                        "title": "price",
+                        "description": "Price of the new corporation",
+                        "type": "number",
+                        "format": "float",
+                        "example": "99999999.99"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateStockRequest": {
+                "title": "Update Stock request",
+                "description": "Update Stock request body data",
+                "properties": {
+                    "price": {
+                        "title": "price",
+                        "description": "Price of the new corporation",
+                        "type": "number",
+                        "format": "float",
+                        "example": "99999999.99"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Clients",
+            "description": "API Endpoints of Clients"
+        },
+        {
+            "name": "Corporations",
+            "description": "API Endpoints of Corporations"
+        },
+        {
+            "name": "Stocks",
+            "description": "API Endpoints of Stocks"
+        }
+    ],
+    "security": [
+        {
+            "passport": {
+                "type": "oauth2",
+                "description": "Laravel passport oauth2 security.",
+                "in": "header",
+                "scheme": "https",
+                "flows": {
+                    "password": {
+                        "authorizationUrl": "http://api.stock-finance.test/oauth/authorize",
+                        "tokenUrl": "http://api.stock-finance.test/oauth/token",
+                        "refreshUrl": "http://api.stock-finance.test/token/refresh",
+                        "scopes": []
+                    }
+                }
+            }
+        }
+    ]
+}
